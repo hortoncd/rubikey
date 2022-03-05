@@ -9,7 +9,7 @@ module Rubikey
 
     attr_reader :status
 
-    base_uri 'http://api.yubico.com/wsapi/2.0/'
+    base_uri 'https://api.yubico.com/wsapi/2.0'
 
     def initialize(args)
       raise ArgumentError, "API ID is required" if args[:api_id].nil?

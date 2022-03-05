@@ -2,19 +2,19 @@ require 'httparty'
 
 module Rubikey::HTTPartyResponseExtensions
   refine HTTParty::Response do
-    def is_tempered?(api_key, nonce)
+    def is_tampered?(api_key, nonce)
       if /nonce=(.+)$/.match self.parsed_response
-        tempered_signature?(api_key)|| tempered_nonce?(nonce)
+        tampered_signature?(api_key)|| tampered_nonce?(nonce)
       else
-        tempered_signature?(api_key)
+        tampered_signature?(api_key)
       end
     end
 
-    def tempered_signature?(api_key)
+    def tampered_signature?(api_key)
       response_signature != Rubikey::HTTPartyResponseExtensions::Hmac.new(self.parsed_response, api_key).value
     end
 
-    def tempered_nonce?(nonce)
+    def tampered_nonce?(nonce)
       nonce != response_nonce
     end
 
@@ -23,13 +23,13 @@ module Rubikey::HTTPartyResponseExtensions
     end
 
     def response_nonce
-      self.parsed_response[/nonce=(.+)$/, 1].strip 
+      self.parsed_response[/nonce=(.+)$/, 1].strip
     end
   end
 
   class Hmac
     attr_reader :value
-  
+
     def initialize(response, api_key)
       response_params = remove_signature_from(response)
       response_string = stringify(response_params)
@@ -43,9 +43,8 @@ module Rubikey::HTTPartyResponseExtensions
        response.sub(/^h=(.+)$/, '').split(' ')
     end
 
-    def stringify(params) 
+    def stringify(params)
       params.sort.join('&')
     end
-
   end
 end

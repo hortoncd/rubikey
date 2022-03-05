@@ -5,7 +5,7 @@ module Rubikey
     using Rubikey::EncodingExtensions
 
     attr_reader :unique_passcode
-    
+
     def initialize(unique_passcode)
       raise InvalidPasscode, 'Passcode must be at least 32 modified hexadecimal characters' unless unique_passcode.is_modified_hexadecimal? && unique_passcode.length >= 32
 

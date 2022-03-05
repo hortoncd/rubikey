@@ -6,7 +6,7 @@ Rubikey is another Ruby (2.1+) library for decoding, decrypting, parsing, and ve
 
 Add this line to your application's Gemfile:
 
-    gem 'rubikey', git: 'git@github.com:sigfrid/rubikey.git' 
+    gem 'rubikey', git: 'git@github.com:sigfrid/rubikey.git'
 
 And then execute:
 
@@ -14,7 +14,7 @@ And then execute:
 
 ## Usage
 
-### Key configuration 
+### Key configuration
 
 Once you have instantiated a Rubikey::OTP object by passing to it your otp, you can get the YubiKey configuration by calling ```config``` and passing to it your Yubikey ```secret_key```.
 

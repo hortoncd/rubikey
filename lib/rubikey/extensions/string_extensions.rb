@@ -3,7 +3,7 @@ module Rubikey::StringExtensions
     def last(n)
       self[-n,n]
     end
-    
+
     def first(n)
       self[0,n]
     end

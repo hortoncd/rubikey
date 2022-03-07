@@ -9,6 +9,10 @@ describe "OTP" do
     it "has the expected unique passcode" do
       expect(otp.unique_passcode).to eq('enrlucvketdlfeknvrdggingjvrggeffenhevendbvgd')
     end
+
+    it "has the expected public yubikey id" do
+      expect(otp.public_id).to eq('enrlucvketdl')
+    end
   end
 
   context 'when initialization failes' do

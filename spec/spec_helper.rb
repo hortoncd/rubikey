@@ -13,7 +13,6 @@ end if File.exists?(env_file)
 
 
 RSpec.configure do |config|
-  config.color_enabled = true
   config.formatter     = 'documentation'
 
  # config.order = 'random'

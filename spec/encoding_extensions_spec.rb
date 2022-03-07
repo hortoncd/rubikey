@@ -25,19 +25,19 @@ describe "EncodingExtensions" do
 
   context 'detects' do
     it 'when a string is hexadecimal' do
-      expect('ecde18dbe76fbd0c33330f1c354871db'.is_hexadecimal?).to be_true
+      expect('ecde18dbe76fbd0c33330f1c354871db'.is_hexadecimal?).to be(true)
     end
 
     it 'when a string is  not hexadecimal' do
-      expect('foobar'.is_hexadecimal?).to be_false
+      expect('foobar'.is_hexadecimal?).to be(false)
     end
 
     it 'when a string is modified hexadecimal' do
-      expect('dteffujehknhfjbrjnlnldnhcujvddbikngjrtgh'.is_modified_hexadecimal?).to be_true
+      expect('dteffujehknhfjbrjnlnldnhcujvddbikngjrtgh'.is_modified_hexadecimal?).to be(true)
     end
 
      it 'when a string is not modified hexadecimal' do
-      expect('test'.is_modified_hexadecimal?).to be_false
+      expect('test'.is_modified_hexadecimal?).to be(false)
     end
 
     context 'before converting to binary' do

@@ -27,13 +27,29 @@ It returns a Rubikey::KeyConfig object that provides:
 unique_passcode = 'ccccccbtcvvhkbkvkdrbbjjlkvgvtvrvibekdcentbti'
 secret_key = 'ecde18dbe76fbd0c33330f1c354871db'
 
-opt = Rubikey::OTP.new(unique_passcode)
-keyconfig = opt.config(secret_key)    #=> Rubikey::KeyConfig
+otp = Rubikey::OTP.new(unique_passcode)
+keyconfig = otp.config(secret_key)    #=> Rubikey::KeyConfig
 
 
 keyconfig.public_id                   #=> 'ccccccbtcvvh'
 keyconfig.secret_id                   #=> '8792ebfe26cc'
 keyconfig.insert_counter              #=> 1
+
+```
+
+If you don't need to work with the `secret_id`, you can call `config` without
+the `secret_key`. This is useful if you still want easy access to the
+`public_id` from the `Rubikey::KeyConfig` object.
+
+```ruby
+unique_passcode = 'ccccccbtcvvhkbkvkdrbbjjlkvgvtvrvibekdcentbti'
+
+otp = Rubikey::OTP.new(unique_passcode)
+keyconfig = otp.config                #=> Rubikey::KeyConfig
+
+keyconfig.public_id                   #=> 'ccccccbtcvvh'
+keyconfig.secret_id                   #=> nil
+keyconfig.insert_counter              #=> nil
 
 ```
 
@@ -43,7 +59,7 @@ keyconfig.insert_counter              #=> 1
 Once you have instantiated a Rubikey::OTP object by passing to it your otp, you can validate it by calling ```authenticate``` and passing to it your Yubikey ```api_id``` and ```api_key```.
 
 
-If you use YubiCloud you can get your API id and key at [yubico.com/getapykey](https://upgrade.yubico.com/getapikey/)
+If you use YubiCloud you can get your API id and key at [yubico.com/getapikey](https://upgrade.yubico.com/getapikey/)
 
 It returns a Rubikey::ApiAuthentication object that provides:
 + status: Authentication outcome.
@@ -53,8 +69,8 @@ unique_passcode = 'ccccccbtcvvhkbkvkdrbbjjlkvgvtvrvibekdcentbti'
 api_id = 1234
 api_key = 'n2AS3oMbInqZ7BbxN/vrFayYUaQ='
 
-opt = Rubikey::OTP.new(unique_passcode)
-authentication =  opt.authenticate(api_id: api_id, api_key: api_key)    #=> Rubikey::ApiAuthentication
+otp = Rubikey::OTP.new(unique_passcode)
+authentication =  otp.authenticate(api_id: api_id, api_key: api_key)    #=> Rubikey::ApiAuthentication
 
 authentication.status                                                   #=> THE STATUS
 

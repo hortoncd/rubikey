@@ -11,20 +11,22 @@ module Rubikey
     attr_reader :secret_id
     attr_reader :insert_counter
 
-    def initialize(unique_passcode, secret_key)
-      raise InvalidKey, 'Secret key must be 32 hexadecimal characters' unless secret_key.is_hexadecimal? && secret_key.length == 32
-
+    def initialize(unique_passcode, secret_key = nil)
       @unique_passcode = unique_passcode
       @public_id = @unique_passcode.first(12)
 
-      decrypter = OpenSSL::Cipher.new('AES-128-ECB').decrypt
-      decrypter.key = secret_key.hexadecimal_to_binary
-      decrypter.padding = 0
-      @token = decrypter.update(base) + decrypter.final
+      if secret_key
+        raise InvalidKey, 'Secret key must be 32 hexadecimal characters' unless secret_key.is_hexadecimal? && secret_key.length == 32
 
-      raise BadRedundancyCheck unless cyclic_redundancy_check_is_valid?
+        decrypter = OpenSSL::Cipher.new('AES-128-ECB').decrypt
+        decrypter.key = secret_key.hexadecimal_to_binary
+        decrypter.padding = 0
+        @token = decrypter.update(base) + decrypter.final
 
-      @secret_id, @insert_counter, timestamp, timestamp_lo, session_counter, random_number, crc = @token.unpack('H12vvCCvv')
+        raise BadRedundancyCheck unless cyclic_redundancy_check_is_valid?
+
+        @secret_id, @insert_counter, timestamp, timestamp_lo, session_counter, random_number, crc = @token.unpack('H12vvCCvv')
+      end
     end
 
     private

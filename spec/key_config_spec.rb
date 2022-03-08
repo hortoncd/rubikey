@@ -15,10 +15,26 @@ describe "KeyConfig" do
 
     it "has the expected insert counter" do
       expect(key_config.insert_counter).to eq(1)
-   end
+    end
   end
 
-  context 'when initialization failes' do
+  context 'when initialization succeeded without a secret key' do
+    let(:key_config) { Rubikey::KeyConfig.new('enrlucvketdlfeknvrdggingjvrggeffenhevendbvgd') }
+
+    it "has the expected public yubikey id" do
+      expect(key_config.public_id).to eq('enrlucvketdl')
+    end
+
+    it "has no secret yubikey id" do
+      expect(key_config.secret_id).to eq(nil)
+    end
+
+    it "has no expected insert counter" do
+      expect(key_config.insert_counter).to eq(nil)
+    end
+  end
+
+  context 'when initialization fails' do
     subject(:unique_passcode) { 'hknhfjbrjnlnldnhcujvddbikngjrtgh' }
     let(:secret_key) { 'ecde18dbe76fbd0c33330f1c354871db' }
 
@@ -27,7 +43,7 @@ describe "KeyConfig" do
         expect{ Rubikey::KeyConfig.new(unique_passcode, unique_passcode) }.to raise_error(Rubikey::InvalidKey)
       end
 
-      it 'key is not 32 chararcters long' do
+      it 'key is not 32 characters long' do
         expect{ Rubikey::KeyConfig.new(unique_passcode, secret_key[0,31]) }.to raise_error(Rubikey::InvalidKey)
       end
     end
